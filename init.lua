@@ -1,3 +1,4 @@
+-- Some changes for jj (git compatible vcs)
 local spec = {
   { "kylechui/nvim-surround", opts = true },
   { "m4xshen/autoclose.nvim", opts = { options = { pair_spaces = true } } },
