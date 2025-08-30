@@ -1,20 +1,20 @@
-local spec = {
+vim.pack.add({ "https://github.com/folke/lazy.nvim" })
+require("lazy").setup({
   { "derektata/lorem.nvim" },
-  { "ibhagwan/fzf-lua", opts = {} },
-  { "folke/which-key.nvim", opts = {} },
-  { "kylechui/nvim-surround", opts = {} }, 
-  { "NMAC427/guess-indent.nvim", opts = {} },
-
-  { "lukas-reineke/indent-blankline.nvim", opts = {}, main = "ibl" },
-  { "m4xshen/autoclose.nvim", opts = { options = { pair_spaces = true } } },
+  { "lewis6991/gitsigns.nvim",                 opts = {} },
+  { "ibhagwan/fzf-lua",                        opts = {} },
+  { "folke/which-key.nvim",                    opts = {} },
+  { "kylechui/nvim-surround",                  opts = {} },
+  { "NMAC427/guess-indent.nvim",               opts = {} },
+  { "lukas-reineke/indent-blankline.nvim",     opts = {}, main = "ibl" },
+  { "m4xshen/autoclose.nvim",                  opts = { options = { pair_spaces = true } } },
   { "nvim-treesitter/nvim-treesitter-context", opts = { separator = '-' } },
-  { "nvim-treesitter/nvim-treesitter", main = "nvim-treesitter.configs",
+  { "nvim-treesitter/nvim-treesitter",         main = "nvim-treesitter.configs",
     opts = {
       ensure_installed = { "typst", "rust", "python", "c" },
       highlight = { enable = true },
     }
   },
-  { "lewis6991/gitsigns.nvim", opts = {} },
   { "navarasu/onedark.nvim", config = function()
       require("onedark").setup({ style = "warmer" })
       require("onedark").load()
@@ -23,51 +23,42 @@ local spec = {
 
   -- LSP and more IDE like experience
   { "neovim/nvim-lspconfig" },
-  { "mason-org/mason.nvim", opts = {} },
+  { "mason-org/mason.nvim",           opts = {} },
   { "mason-org/mason-lspconfig.nvim", opts = {} },
-  { "saghen/blink.cmp", version = "v1.6.0", opts = {
+  { "saghen/blink.cmp", version = "v1.6.0",
+    opts = {
       keymap = { preset = "enter" },
       completion = {
         documentation = { auto_show = true },
         list = { selection = { preselect = false } }
       }, -- <c-space> doesn't work on windows
-    }
+    },
   },
-  { "nvim-mini/mini.nvim", config = function()
-    -- signcolumn = "yes" number = true cursorline = true swapfile = false winborder = "rounded"
-    require("mini.basics").setup({
-      options = { win_border = "rounder" },
-      mappings = nil, -- set to false when fixed: https://github.com/nvim-mini/mini.nvim/issues/1973
-    })
-  end },
-  { "nvim-neo-tree/neo-tree.nvim",
-    dependencies = {
+  { "nvim-mini/mini.basics", opts = { options = { win_border = "rounder" }, mappings = { basics = false } } },
+  { "nvim-neo-tree/neo-tree.nvim", dependencies = {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
       "nvim-tree/nvim-web-devicons",
     },
-    opts = { enable_cursor_hijack  = true },
+    opts = { enable_cursor_hijack = true },
   },
 
   -- Language specific plugins
   { "chomosuke/typst-preview.nvim", opts = { open_cmd = "start firefox -P typst-preview %s" } }
-}
-vim.pack.add({"https://github.com/folke/lazy.nvim"})
-require("lazy").setup(spec)
-
+})
 vim.opt.ruler = true
 vim.opt.scrolloff = 6
 
 vim.g.mapleader = " "
 vim.keymap.set("n", "<space>", "<Nop>")
-vim.keymap.set({"n", "x"}, "<Leader>y", "\"+y")
-vim.keymap.set({"n", "x"}, "<Leader>Y", "<cmd>%y+<cr>")
-vim.keymap.set({"n", "x"}, "<Leader>ff", "<cmd>FzfLua files<cr>")
-vim.keymap.set({"n", "x"}, "j", "gj")
-vim.keymap.set({"n", "x"}, "k", "gk")
-vim.keymap.set({"n", "x", "i"}, "<C-C>", "<cmd>!start cmd '%'<cr>")
+vim.keymap.set({ "n", "x" }, "<Leader>y", "\"+y")
+vim.keymap.set({ "n", "x" }, "<Leader>Y", "<cmd>%y+<cr>")
+vim.keymap.set({ "n", "x" }, "<Leader>ff", "<cmd>FzfLua files<cr>")
+vim.keymap.set({ "n", "x" }, "j", "gj")
+vim.keymap.set({ "n", "x" }, "k", "gk")
+vim.keymap.set({ "n", "x", "i" }, "<C-C>", "<cmd>!start cmd '%'<cr>")
 
--- TODO: Maybe put this in another file ? 
+-- TODO: Maybe put this in another file ?
 vim.lsp.config('lua_ls', {
   settings = {
     Lua = {
