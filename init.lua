@@ -34,6 +34,15 @@ local spec = {
       }, -- <c-space> doesn't work on windows
     }
   },
+  -- { 'stevearc/oil.nvim', opts = true },
+  { "nvim-neo-tree/neo-tree.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
+    opts = { enable_cursor_hijack  = true },
+  },
   -- Language specific plugins
   { "chomosuke/typst-preview.nvim", opts = { open_cmd = "start firefox -P typst-preview %s" } }
 }
