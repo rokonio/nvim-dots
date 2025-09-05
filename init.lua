@@ -56,7 +56,10 @@ vim.keymap.set({ "n", "x" }, "<Leader>Y", "<cmd>%y+<cr>")
 vim.keymap.set({ "n", "x" }, "<Leader>ff", "<cmd>FzfLua files<cr>")
 vim.keymap.set({ "n", "x" }, "j", "gj")
 vim.keymap.set({ "n", "x" }, "k", "gk")
-vim.keymap.set({ "n", "x", "i" }, "<C-C>", "<cmd>!start cmd '%'<cr>")
+-- vim.keymap.set({ "n", "x", "i" }, "<C-C>", "<cmd>!start cmd '%'<cr>")
+vim.keymap.set({ "t", }, "<C-N>", "<C-\\><C-n>")
+vim.keymap.set({ "t", }, "<C-w>", "<C-\\><C-n><C-w>")
+
 
 -- TODO: Maybe put this in another file ?
 vim.lsp.config('lua_ls', {
