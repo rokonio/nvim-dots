@@ -58,7 +58,7 @@ vim.opt.winheight = 21
 vim.g.mapleader = " "
 vim.keymap.set("n", "<space>", "<Nop>")
 vim.keymap.set({ "n", "x" }, "<Leader>y", "\"+y")
-vim.keymap.set({ "n", "x" }, "<Leader>h", ":e ~\\Documents\\myhelp.md<cr>")
+vim.keymap.set({ "n", "x" }, "<Leader>h", "<cmd>e $MYVIMRC<cr>G")
 vim.keymap.set({ "n", "x" }, "<Leader>Y", "<cmd>%y+<cr>")
 vim.keymap.set({ "n", "x" }, "<Leader><Leader>", "<cmd>FzfLua files<cr>")
 vim.keymap.set({ "n", "x" }, "j", "gj")
@@ -66,6 +66,7 @@ vim.keymap.set({ "n", "x" }, "k", "gk")
 vim.keymap.set({ "n", "x", "i" }, "<C-C>", "<cmd>!start powershell<cr>")
 vim.keymap.set({ "t", }, "<C-N>", "<C-\\><C-n>")
 vim.keymap.set({ "t", }, "<C-w>", "<C-\\><C-n><C-w>")
+vim.keymap.set({ "n", "x" }, "grf",  "<cmd>lua vim.lsp.buf.format()<cr>")
 
 -- TODO: Maybe put this in another file
 vim.lsp.config('lua_ls', {
@@ -83,3 +84,20 @@ vim.lsp.config('lua_ls', {
     }
   }
 })
+
+--[[ 
+## Help for myself
+- *NEW*: use gx in file explorer and anywhere too (there's also :!start <file>)
+- <C-L> to clear 
+- grt to go to type definition
+- <C-w><C-d> to show diagnostic (]d to show the next one)
+- :e $VIMRC to edit config
+- :Mason for LSP (pyright + ruff(formatting) for python)
+- :Lazy to update and manage 
+- <backspace> to go up one dfr in NeoTree
+- gq for formatting a range
+- gc for commenting (it's also a textobject)
+
+## Random fun ones
+- ga: shows ascii code of current caracter
+--]]
