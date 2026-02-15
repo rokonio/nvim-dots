@@ -8,8 +8,10 @@ require("lazy").setup({
   { "NMAC427/guess-indent.nvim",               opts = {} },
   { "lukas-reineke/indent-blankline.nvim",     opts = {}, main = "ibl" },
   { "m4xshen/autoclose.nvim",                  opts = { options = { pair_spaces = true } } },
-  { "nvim-treesitter/nvim-treesitter-context", opts = { separator = '-' } },
+  { "Bekaboo/dropbar.nvim",                    opts = {} },
   { "nvim-treesitter/nvim-treesitter",
+    branch = "master", -- Main branch doesn't work out of the box on windows
+    main = "nvim-treesitter.configs",
     opts = {
       ensure_installed = { "typst", "rust", "python", "c" },
       highlight = { enable = true },
