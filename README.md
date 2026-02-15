@@ -5,3 +5,5 @@ Moto:
 - only a single file, less than 100 lines
 - use as much native feature as possible
 - almost an IDE
+
+Requires nvim 0.12+ (for easy package and lsp management)
