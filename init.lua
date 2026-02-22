@@ -1,6 +1,5 @@
 vim.pack.add({ "https://github.com/folke/lazy.nvim" })
 require("lazy").setup({
-  -- { "derektata/lorem.nvim" },
   { "lewis6991/gitsigns.nvim",                 opts = {} },
   { "ibhagwan/fzf-lua",                        opts = {} },
   { "folke/which-key.nvim",                    opts = {} },
@@ -8,12 +7,16 @@ require("lazy").setup({
   { "NMAC427/guess-indent.nvim",               opts = {} },
   { "lukas-reineke/indent-blankline.nvim",     opts = {}, main = "ibl" },
   { "m4xshen/autoclose.nvim",                  opts = { options = { pair_spaces = true } } },
-  { "Bekaboo/dropbar.nvim",                    opts = {} },
+  { "Bekaboo/dropbar.nvim", config = function()
+      local sources = require("dropbar.sources")
+      require("dropbar").setup({bar = { sources = { sources.path, sources.lsp } }})
+    end
+  },
   { "nvim-treesitter/nvim-treesitter",
     branch = "master", -- Main branch doesn't work out of the box on windows
     main = "nvim-treesitter.configs",
     opts = {
-      ensure_installed = { "typst", "rust", "python", "c" },
+      ensure_installed = { "typst", "rust", "python", "c", "json", "markdown" },
       highlight = { enable = true },
     }
   },
@@ -47,11 +50,7 @@ require("lazy").setup({
   },
 
   -- Language specific plugins
-  { "chomosuke/typst-preview.nvim", opts = { open_cmd = "start firefox -P typst-preview %s" } }
-}, {
-  performance = {
-    cache = { enabled = true },
-  }
+  { "chomosuke/typst-preview.nvim", opts = {} }
 })
 vim.opt.ruler = true
 vim.opt.scrolloff = 6
@@ -99,6 +98,8 @@ vim.lsp.config('lua_ls', {
 - <backspace> to go up one dfr in NeoTree
 - gq for formatting a range
 - gc for commenting (it's also a textobject)
+- ]b and <C-6> to navigate buffers
+- `:browse oldfiles` to view and select recent files
 
 ## Random fun ones
 - ga: shows ascii code of current caracter
