@@ -6,7 +6,8 @@ require("lazy").setup({
   { "kylechui/nvim-surround",                  opts = {} },
   { "NMAC427/guess-indent.nvim",               opts = {} },
   { "lukas-reineke/indent-blankline.nvim",     opts = {}, main = "ibl" },
-  { "m4xshen/autoclose.nvim",                  opts = { options = { pair_spaces = true } } },
+  -- { "m4xshen/autoclose.nvim",                  opts = { options = { pair_spaces = true } } },
+  { "altermo/ultimate-autopair.nvim", opts = {{ '$', '$', ft = { "typst" }}}, branch = "v0.6" },
   { "Bekaboo/dropbar.nvim", config = function()
       local sources = require("dropbar.sources")
       require("dropbar").setup({bar = { sources = { sources.path, sources.lsp } }})
@@ -20,6 +21,19 @@ require("lazy").setup({
       highlight = { enable = true },
     }
   },
+  { "nvim-treesitter/nvim-treesitter-textobjects", 
+    opts = {
+      select = {
+        lookahead = true,
+        selection_modes = {
+          ['@math.inner'] = 'v',
+          ['@math.outer'] = 'V',
+        },
+        include_surrounding_whitespace = false,
+      }
+    },
+    branch = "main", 
+  },
   { "navarasu/onedark.nvim", config = function()
       require("onedark").setup({ style = "warmer" })
       require("onedark").load()
@@ -31,7 +45,6 @@ require("lazy").setup({
   { "mason-org/mason.nvim",           opts = {}, cmd = { "Mason", "MasonInstall" } },
   { "mason-org/mason-lspconfig.nvim", opts = {} },
   { "saghen/blink.cmp", version = "v1.6.0",
-    event = "InsertEnter",
     opts = {
       keymap = { preset = "enter" },
       completion = {
@@ -59,7 +72,6 @@ vim.opt.winheight = 21
 vim.g.mapleader = " "
 vim.keymap.set("n", "<space>", "<Nop>")
 vim.keymap.set({ "n", "x" }, "<Leader>y", "\"+y")
-vim.keymap.set({ "n", "x" }, "<Leader>h", "<cmd>e $MYVIMRC<cr>G")
 vim.keymap.set({ "n", "x" }, "<Leader>Y", "<cmd>%y+<cr>")
 vim.keymap.set({ "n", "x" }, "<Leader><Leader>", "<cmd>FzfLua files<cr>")
 vim.keymap.set({ "n", "x" }, "j", "gj")
@@ -68,6 +80,13 @@ vim.keymap.set({ "n", "x", "i" }, "<C-C>", "<cmd>!start powershell<cr>")
 vim.keymap.set({ "t", }, "<C-N>", "<C-\\><C-n>")
 vim.keymap.set({ "t", }, "<C-w>", "<C-\\><C-n><C-w>")
 vim.keymap.set({ "n", "x" }, "grf",  "<cmd>lua vim.lsp.buf.format()<cr>")
+
+vim.keymap.set({ "x", "o" }, "am", function()
+	require "nvim-treesitter-textobjects.select".select_textobject("@math.outer", "textobjects")
+end)
+vim.keymap.set({ "x", "o" }, "im", function()
+	require "nvim-treesitter-textobjects.select".select_textobject("@math.inner", "textobjects")
+end)
 
 -- TODO: Maybe put this in another file
 vim.lsp.config('lua_ls', {
@@ -89,6 +108,7 @@ vim.lsp.config('lua_ls', {
 --[[ 
 ## Help for myself
 - *NEW*: use gx in file explorer and anywhere too (there's also :!start <file>)
+  => Actually it doesn't work in nested files. 
 - <C-L> to clear 
 - grt to go to type definition
 - <C-w><C-d> to show diagnostic (]d to show the next one)
@@ -100,6 +120,7 @@ vim.lsp.config('lua_ls', {
 - gc for commenting (it's also a textobject)
 - ]b and <C-6> to navigate buffers
 - `:browse oldfiles` to view and select recent files
+- m to mark and ` to go to mark (UPPERCASE marks are persistent !) -> use `H to come here !
 
 ## Random fun ones
 - ga: shows ascii code of current caracter
