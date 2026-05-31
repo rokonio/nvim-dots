@@ -4,10 +4,19 @@ require("lazy").setup({
   { "ibhagwan/fzf-lua",                        opts = {} },
   { "folke/which-key.nvim",                    opts = {} },
   { "kylechui/nvim-surround",                  opts = {} },
+  { "L3MON4D3/LuaSnip",                  opts = {} },
   { "NMAC427/guess-indent.nvim",               opts = {} },
   { "lukas-reineke/indent-blankline.nvim",     opts = {}, main = "ibl" },
   -- { "m4xshen/autoclose.nvim",                  opts = { options = { pair_spaces = true } } },
-  { "altermo/ultimate-autopair.nvim", opts = {{ '$', '$', ft = { "typst" }}}, branch = "v0.6" },
+  -- { "altermo/ultimate-autopair.nvim", opts = {{ '$', '$', ft = { "typst" }}}, branch = "v0.6" },
+  { "windwp/nvim-autopairs", event = "InsertEnter", config = function()
+      local Rule = require('nvim-autopairs.rule')
+      local npairs = require('nvim-autopairs')
+      npairs.setup {}
+
+      npairs.add_rule(Rule("$","$","typst"))
+    end
+  },
   { "Bekaboo/dropbar.nvim", config = function()
       local sources = require("dropbar.sources")
       require("dropbar").setup({bar = { sources = { sources.path, sources.lsp } }})
@@ -27,7 +36,7 @@ require("lazy").setup({
         lookahead = true,
         selection_modes = {
           ['@math.inner'] = 'v',
-          ['@math.outer'] = 'V',
+          ['@math.outer'] = 'v',
         },
         include_surrounding_whitespace = false,
       }
@@ -46,6 +55,9 @@ require("lazy").setup({
   { "mason-org/mason-lspconfig.nvim", opts = {} },
   { "saghen/blink.cmp", version = "v1.6.0",
     opts = {
+      snippets = {
+        preset = "luasnip",
+      },
       keymap = { preset = "enter" },
       completion = {
         documentation = { auto_show = true },
@@ -53,7 +65,7 @@ require("lazy").setup({
       }, -- <c-space> doesn't work on windows
     },
   },
-  { "nvim-mini/mini.basics", opts = { options = { win_border = "rounder" }, mappings = { basics = false } } },
+  { "nvim-mini/mini.basics", opts = { options = { win_border = "rounder" }, mappings = { basics = false, move_with_alt = true, } } },
   { "nvim-neo-tree/neo-tree.nvim", dependencies = {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
@@ -63,29 +75,34 @@ require("lazy").setup({
   },
 
   -- Language specific plugins
-  { "chomosuke/typst-preview.nvim", opts = {} }
+  { "chomosuke/typst-preview.nvim", opts = { open_cmd = "start firefox -P typst-preview %s" } }
 })
 vim.opt.ruler = true
 vim.opt.scrolloff = 6
 vim.opt.winheight = 21
 
+vim.o.smartindent = true
+vim.o.softtabstop = 4
+vim.o.swapfile = false
+vim.o.tabstop = 4
+
 vim.g.mapleader = " "
 vim.keymap.set("n", "<space>", "<Nop>")
 vim.keymap.set({ "n", "x" }, "<Leader>y", "\"+y")
+vim.keymap.set({ "n", "x" }, "<Leader>p", "\"+p")
 vim.keymap.set({ "n", "x" }, "<Leader>Y", "<cmd>%y+<cr>")
 vim.keymap.set({ "n", "x" }, "<Leader><Leader>", "<cmd>FzfLua files<cr>")
 vim.keymap.set({ "n", "x" }, "j", "gj")
 vim.keymap.set({ "n", "x" }, "k", "gk")
 vim.keymap.set({ "n", "x", "i" }, "<C-C>", "<cmd>!start powershell<cr>")
-vim.keymap.set({ "t", }, "<C-N>", "<C-\\><C-n>")
 vim.keymap.set({ "t", }, "<C-w>", "<C-\\><C-n><C-w>")
 vim.keymap.set({ "n", "x" }, "grf",  "<cmd>lua vim.lsp.buf.format()<cr>")
 
 vim.keymap.set({ "x", "o" }, "am", function()
-	require "nvim-treesitter-textobjects.select".select_textobject("@math.outer", "textobjects")
+  require "nvim-treesitter-textobjects.select".select_textobject("@math.outer", "textobjects")
 end)
 vim.keymap.set({ "x", "o" }, "im", function()
-	require "nvim-treesitter-textobjects.select".select_textobject("@math.inner", "textobjects")
+  require "nvim-treesitter-textobjects.select".select_textobject("@math.inner", "textobjects")
 end)
 
 -- TODO: Maybe put this in another file
@@ -105,6 +122,21 @@ vim.lsp.config('lua_ls', {
   }
 })
 
+local luasnip = require("luasnip")
+
+local s = luasnip.snippet
+local t = luasnip.text_node
+
+local foo = s("template-setup", t({
+  "#import\"@local/my-template:1.0.0\": *",
+  "#show: template",
+  "#set text(size: 14pt)",
+  "#set page(height: 100in)",
+  "",
+}))
+
+luasnip.add_snippets("typst", { foo })
+
 --[[ 
 ## Help for myself
 - *NEW*: use gx in file explorer and anywhere too (there's also :!start <file>)
@@ -121,6 +153,8 @@ vim.lsp.config('lua_ls', {
 - ]b and <C-6> to navigate buffers
 - `:browse oldfiles` to view and select recent files
 - m to mark and ` to go to mark (UPPERCASE marks are persistent !) -> use `H to come here !
+
+- ctrl+fn+b to stop a python program in windows cmd (on certrain dell laptops without a break key)
 
 ## Random fun ones
 - ga: shows ascii code of current caracter
